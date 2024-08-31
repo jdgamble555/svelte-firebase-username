@@ -19,7 +19,11 @@
 
 		const username = inputElement.value;
 
-		if (!username || username === $user?.username) {
+		if (!$user) {
+			throw 'Not logged in!';
+		}
+
+		if (!username || username === $user.username) {
 			available = null;
 			return;
 		}
