@@ -94,6 +94,7 @@
 			<button
 				type="submit"
 				class="w-fit rounded-lg border bg-blue-600 p-3 font-semibold text-white"
+				disabled={!available}
 			>
 				Update
 			</button>
