@@ -1,12 +1,7 @@
-import type { Actions, PageServerLoad } from './$types';
+import type { Actions } from './$types';
 import { error, fail } from '@sveltejs/kit';
 import { FirebaseError } from 'firebase/app';
-import { adminAuth, adminDB } from '$lib/firebase-admin';
-
-export const load = (async () => {
-
-
-}) satisfies PageServerLoad;
+import { adminAuth, adminDB, verifyIdToken } from '$lib/firebase-admin';
 
 
 export const actions = {
@@ -32,9 +27,9 @@ export const actions = {
             return fail(401, { message: 'Invalid Username!' });
         }
 
-        const token = await adminAuth.verifyIdToken(idToken);
+        const { token, error: tokenError } = await verifyIdToken(idToken);
 
-        if (!token) {
+        if (!token || tokenError) {
             error(401, 'Unauthorized!');
         }
 

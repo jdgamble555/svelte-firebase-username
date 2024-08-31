@@ -28,7 +28,12 @@
 			return;
 		}
 
-		available = await usernameAvailable(username);
+		const { available: isAvailable, error: handleError } = await usernameAvailable(username);
+
+		if (handleError) {
+			toast.error(handleError);
+		}
+		available = isAvailable;
 	}, 500);
 
 	const updateProfile: SubmitFunction = async ({ formData }) => {

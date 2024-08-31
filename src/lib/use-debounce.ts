@@ -1,4 +1,6 @@
-export function useDebounce<F extends (...args: Parameters<F>) => ReturnType<F>>(
+export function useDebounce<F extends (
+    ...args: Parameters<F>
+) => ReturnType<F>>(
     func: F,
     waitFor: number,
 ): (...args: Parameters<F>) => void {
