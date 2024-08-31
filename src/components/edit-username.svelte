@@ -93,7 +93,7 @@
 			</div>
 			<button
 				type="submit"
-				class="w-fit rounded-lg border bg-blue-600 p-3 font-semibold text-white"
+				class="w-fit rounded-lg border bg-blue-600 p-3 font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50"
 				disabled={!available}
 			>
 				Update
