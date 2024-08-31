@@ -12,4 +12,4 @@ export const app = getApps().length
     : initializeApp(firebase_config);
 
 export const auth = getAuth(app);
-export const db = getFirestore(app, 'rbac');
+export const db = getFirestore(app, 'firestore-testing');

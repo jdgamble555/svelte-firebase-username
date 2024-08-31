@@ -11,31 +11,6 @@ export const load = (async () => {
 
 export const actions = {
 
-    usernameAvailable: async ({ request }) => {
-
-        const { username } = Object.fromEntries(
-            await request.formData()
-        );
-
-        if (!username || typeof username !== 'string') {
-            error(401, 'Invalid Username Input!');
-        }
-
-        const snap = await adminDB
-            .doc(`usernames/${username}`)
-            .get();
-
-        if (snap.exists) {
-            return {
-                available: false
-            };
-        }
-
-        return {
-            available: true
-        };
-    },
-
     updateUsername: async ({ request }) => {
 
         const { username, idToken } = Object.fromEntries(

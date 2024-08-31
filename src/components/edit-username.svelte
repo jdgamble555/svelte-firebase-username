@@ -5,12 +5,29 @@
 	import { applyAction, enhance } from '$app/forms';
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import { auth } from '$lib/firebase';
+	import { useDebounce } from '$lib/use-debounce';
+	import type { FormEventHandler } from 'svelte/elements';
+	import { usernameAvailable } from '$lib/username';
 
 	const user = useUser();
 	const toast = useToast();
 
-	const updateProfile: SubmitFunction = async ({ formData }) => {
+	let available: boolean | null = null;
 
+	const checkUsername = useDebounce<FormEventHandler<HTMLInputElement>>(async (event) => {
+		const inputElement = event.target as HTMLInputElement;
+
+		const username = inputElement.value;
+
+		if (!username || username === $user?.username) {
+			available = null;
+			return;
+		}
+
+		available = await usernameAvailable(username);
+	}, 500);
+
+	const updateProfile: SubmitFunction = async ({ formData }) => {
 		const currentUser = auth.currentUser;
 
 		if (!currentUser) {
@@ -49,7 +66,7 @@
 			action="/username?/updateUsername"
 			use:enhance={updateProfile}
 		>
-			<div>
+			<div class="flex flex-col gap-2">
 				<label for="username" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
 					Username
 				</label>
@@ -57,12 +74,18 @@
 					type="text"
 					id="username"
 					name="username"
+					on:input={checkUsername}
 					value={$user.username}
 					class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
 					required
 					pattern="^[a-zA-Z0-9]+(?:[._][a-zA-Z0-9]+)*$"
 					title="Username must be only alphanumeric or '.' characters."
 				/>
+				{#if available === true}
+					<span class="flex gap-2 font-semibold text-green-600">Username Available</span>
+				{:else if available === false}
+					<span class="flex gap-2 font-semibold text-red-600">Username is Taken</span>
+				{/if}
 			</div>
 			<button
 				type="submit"
