@@ -86,9 +86,9 @@
 					title="Username must be only alphanumeric or '.' characters."
 				/>
 				{#if available === true}
-					<span class="flex gap-2 font-semibold text-green-600">Username Available</span>
+					<span class="flex gap-2 font-semibold text-green-600">Username Available!</span>
 				{:else if available === false}
-					<span class="flex gap-2 font-semibold text-red-600">Username is Taken</span>
+					<span class="flex gap-2 font-semibold text-red-600">Username is Taken!</span>
 				{/if}
 			</div>
 			<button
